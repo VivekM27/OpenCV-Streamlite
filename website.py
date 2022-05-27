@@ -85,7 +85,7 @@ if selected == "Upload":
         
         #Saving upload
         __EXTENSION = extensionFileName(image_file.name)
-        with open(os.path.join("Images/Uploaded_Image", "upload" + __EXTENSION), "wb") as f:
+        with open(os.path.join("Images/", "upload" + __EXTENSION), "wb") as f:
         
         # with open(os.path.join("Images/Uploaded_Image", image_file.name), "wb") as f:
             f.write((image_file).getbuffer())
@@ -112,7 +112,7 @@ if selected == "Remove Background":
         text_file.close() # close file
         
         # Loading file name from a text file
-        __PATH, __EXTENSION = "Images/Uploaded_Image/", extensionFileName(__FILE_NAME)
+        __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
         __FILE_WITH_EXTENSION = __PATH + "upload" + __EXTENSION
         
         # Convert to Background removed image
@@ -120,18 +120,18 @@ if selected == "Remove Background":
         IMG = LI.getImg()
         BR = bgRemove(IMG, __FILE_WITH_EXTENSION)    
         __BG_REMOVE_IMG = BR.removeBG()
-        LI.imgSave(__BG_REMOVE_IMG, "bgremove" + __EXTENSION, "Images/Bg_Remove/")
-        # st.image("Images/Bg_Remove/bgremove" + __EXTENSION, width = 300)
+        LI.imgSave(__BG_REMOVE_IMG, "bgremove" + __EXTENSION, "Images/")
+        # st.image("Images/bgremove" + __EXTENSION, width = 300)
         image_file = "bgremove" + __EXTENSION
         
         # Saving Background removed image name with extension to a text file
-        LI.imgSave(__BG_REMOVE_IMG, image_file, "Images/Bg_Remove/")
+        LI.imgSave(__BG_REMOVE_IMG, image_file, "Images/")
         st.success("File Saved")
 
         # render image-comparison
         image_comparison(
-            img1 = "Images/Uploaded_Image/upload" + __EXTENSION,
-            img2 = "Images/Bg_Remove/bgremove" + __EXTENSION,
+            img1 = "Images/upload" + __EXTENSION,
+            img2 = "Images/bgremove" + __EXTENSION,
             width = 500
         )
     except:
@@ -154,7 +154,7 @@ if selected == "GrayScale":
         text_file.close() # close file
         
         # Loading file name from a text file
-        __PATH, __EXTENSION = "Images/Uploaded_Image/", extensionFileName(__FILE_NAME)
+        __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
         __FILE_WITH_EXTENSION = __PATH + "upload" + __EXTENSION
         
         # Convert to grayscale image
@@ -172,7 +172,7 @@ if selected == "GrayScale":
 
         # render image-comparison
         image_comparison(
-            img1 = "Images/Uploaded_Image/upload" + __EXTENSION,
+            img1 = "Images/upload" + __EXTENSION,
             img2 = "Images/grayscale" + __EXTENSION,
             width = 500
         )
@@ -204,7 +204,7 @@ if selected == "Edit Image":
             text_file.close() # close file
             
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/Uploaded_Image/", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "upload" + __EXTENSION
             
             # Convert to grayscale image
@@ -222,7 +222,7 @@ if selected == "Edit Image":
 
             # render image-comparison
             image_comparison(
-                img1 = "Images/Uploaded_Image/upload" + __EXTENSION,
+                img1 = "Images/upload" + __EXTENSION,
                 img2 = "Images/translate" + __EXTENSION,
                 width = 500
             )
@@ -244,7 +244,7 @@ if selected == "Edit Image":
             text_file.close() # close file
             
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/Uploaded_Image/", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "upload" + __EXTENSION
             
             # Convert to Rotated image
@@ -262,7 +262,7 @@ if selected == "Edit Image":
 
             # render image-comparison
             image_comparison(
-                img1 = "Images/Uploaded_Image/upload" + __EXTENSION,
+                img1 = "Images/upload" + __EXTENSION,
                 img2 = "Images/rotate" + __EXTENSION,
                 width = 500
             )
@@ -284,7 +284,7 @@ if selected == "Edit Image":
             text_file.close() # close file
             
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/Uploaded_Image/", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "upload" + __EXTENSION
             
             # Convert to Blurred image
@@ -292,8 +292,8 @@ if selected == "Edit Image":
             IMG = LI.getImg()
             BLR = imgS(IMG, __FILE_WITH_EXTENSION)
             __BLURR_IMG = BLR.imgAverageSmoothing((3, 3))
-            LI.imgSave(__BLURR_IMG, "median" + __EXTENSION, "Images/Blurr/")
-            # st.image("Images/Blurr/median" + __EXTENSION, width = 300)
+            LI.imgSave(__BLURR_IMG, "median" + __EXTENSION, "Images/")
+            # st.image("Images/median" + __EXTENSION, width = 300)
             image_file = "median" + __EXTENSION
             
             # Saving Rotated image name with extension to a text file
@@ -302,8 +302,8 @@ if selected == "Edit Image":
 
             # render image-comparison
             image_comparison(
-                img1 = "Images/Uploaded_Image/upload" + __EXTENSION,
-                img2 = "Images/Blurr/median" + __EXTENSION,
+                img1 = "Images/upload" + __EXTENSION,
+                img2 = "Images/median" + __EXTENSION,
                 width = 500
             )
         except:
@@ -324,7 +324,7 @@ if selected == "Edit Image":
             text_file.close() # close file
             
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/Uploaded_Image/", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "upload" + __EXTENSION
             
             # Convert to Edge Detected image
@@ -333,18 +333,18 @@ if selected == "Edit Image":
             DTE = imgT(IMG, __FILE_WITH_EXTENSION)
             __GRAYSCALE_IMG = grayScale(IMG, __FILE_WITH_EXTENSION).grayImg()
             __DETECT_IMG = DTE.imgCan("")
-            LI.imgSave(__DETECT_IMG, "detect" + __EXTENSION, "Images/EdgeDetect/")
-            # st.image("Images/EdgeDetect/detect" + __EXTENSION, width = 300)
+            LI.imgSave(__DETECT_IMG, "detect" + __EXTENSION, "Images/")
+            # st.image("Images/detect" + __EXTENSION, width = 300)
             image_file = "detect" + __EXTENSION
             
             # Saving Rotated image name with extension to a text file
-            LI.imgSave(__DETECT_IMG, image_file, "Images/EdgeDetect")
+            LI.imgSave(__DETECT_IMG, image_file, "Images/")
             st.success("File Saved")
 
             # render image-comparison
             image_comparison(
-                img1 = "Images/Uploaded_Image/upload" + __EXTENSION,
-                img2 = "Images/EdgeDetect/detect" + __EXTENSION,
+                img1 = "Images/upload" + __EXTENSION,
+                img2 = "Images/detect" + __EXTENSION,
                 width = 500
             )
         except:
@@ -370,7 +370,7 @@ if selected == "Download":
             text_file.close() # close file
 
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/Bg_Remove/", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "bgremove" + __EXTENSION
             st.image(__FILE_WITH_EXTENSION, width = 300)
         
@@ -478,7 +478,7 @@ if selected == "Download":
             text_file.close() # close file
 
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/Blurr", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "median" + __EXTENSION
             st.image(__FILE_WITH_EXTENSION, width = 300)
         
@@ -506,7 +506,7 @@ if selected == "Download":
             text_file.close() # close file
 
             # Loading file name from a text file
-            __PATH, __EXTENSION = "Images/EdgeDetect", extensionFileName(__FILE_NAME)
+            __PATH, __EXTENSION = "Images/", extensionFileName(__FILE_NAME)
             __FILE_WITH_EXTENSION = __PATH + "detect" + __EXTENSION
             st.image(__FILE_WITH_EXTENSION, width = 300)
         
@@ -536,13 +536,13 @@ if selected == "Remove Images":
         __EXTENSION = extensionFileName(__FILE_NAME)
 
         # Remove Original Image
-        if remove_img("Images/Uploaded_Image", "upload" + __EXTENSION):
+        if remove_img("Images/", "upload" + __EXTENSION):
             # Print successfull deletion text
             st.title("Suceessfully removed Uploaded image, please upload images again!")
             st.balloons()
 
         # Remove "Background removed" image
-        remove_img("Images/Bg_Remove", "bgremove" + __EXTENSION)
+        remove_img("Images/", "bgremove" + __EXTENSION)
         
         # Remove "Grayscale" image
         remove_img("Images/", "grayscale" + __EXTENSION)
@@ -554,10 +554,10 @@ if selected == "Remove Images":
         remove_img("Images/", "rotate" + __EXTENSION)
 
         # Remove "Blurr" image
-        remove_img("Images/Blurr", "median" + __EXTENSION)
+        remove_img("Images/", "median" + __EXTENSION)
 
         # Remove "Detected Edge" image
-        remove_img("Images/EdgeDetect", "detect" + __EXTENSION)
+        remove_img("Images/", "detect" + __EXTENSION)
 
     except:
         st.error('Please upload an image in Upload Section')
