@@ -195,11 +195,6 @@ with st.sidebar:
 if selected == "Help":
     st.title("Help Site")
     st.markdown("---")
-    st.header("Logout -> ")
-    st.subheader("Go to Home then click on Logout button")
-    st.image("Images/logout.png")
-    st.markdown("---")
-    st.markdown("---")
     st.header("Image Operation Tutotial ->")
     st.subheader("Step - 1 -> Click on Upload to upload an image")
     st.image("Images/help.png", width = 300)
