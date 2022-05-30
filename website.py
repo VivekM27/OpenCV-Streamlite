@@ -1,12 +1,14 @@
 # streamlit run website.py
 
 # Installed Libraries
+from tkinter import Image
 from numpy import full
 from streamlit_option_menu import option_menu
 
 # Locally created libraries
 from Python.loadimg import loadImg
 from Python.backgroundremoval import bgRemove
+from Python.backgroundremoval2 import bgRemove2
 from Python.grayscale import grayScale
 from Python.translate import changeDimensionsImg
 from Python.rotate import rotations
@@ -22,10 +24,10 @@ timestr = time.strftime("%Y%m%d-%H%M%S")
 
 # Remove .streamlit from page title tag
 st.set_page_config(
-   page_title="Manipulate Image",
-   page_icon="🧊",
-   layout="wide",
-   initial_sidebar_state="expanded",
+   page_title = "Vivek Vision",
+   page_icon = "🧊",
+   layout = "wide",
+   initial_sidebar_state = "expanded",
 )
 
 # Custom Method to find extension of a file name
@@ -69,23 +71,51 @@ def fullMethod(FileNameWithoutExtension, ImageCaption, Operation, TextToShow, Su
         IMG = LI.getImg()
 
         if Operation == 1:
-            BR = bgRemove(IMG, __FILE_WITH_EXTENSION)    
-            Value = BR.removeBG()
+            BR = bgRemove2(IMG, __FILE_WITH_EXTENSION)    
+            Value = BR.removeBG2()
+
         if Operation == 2:
             GS = grayScale(IMG, __FILE_WITH_EXTENSION)
             Value = GS.grayImg()
+        
         if Operation == 3:
-            CDI = changeDimensionsImg(50, 50, IMG, __FILE_WITH_EXTENSION)
+            x = st.number_input('How much to be displaced - X Axis', min_value = -(IMG.shape[1]/2), max_value = (IMG.shape[1]/2))
+            st.write('The current number is ', x, '(Negative, Postive - Left, Right)')
+            y = st.number_input('How much to be displaced - Y Axis', min_value = -(IMG.shape[0]/2), max_value = (IMG.shape[0]/2))
+            st.write('The current number is ', y, '(Negative, Postive) - (Down, Up)')
+            CDI = changeDimensionsImg(x, y, IMG, __FILE_WITH_EXTENSION)
             Value = CDI.translateImg()
+        
         if Operation == 4:
-            RTS = rotations(IMG, 45, __FILE_WITH_EXTENSION)
+            __direction = st.radio("Select Rotational Direction", ('Clockwise', 'Anti-Clockwise'))
+            if __direction == 'Clockwise':
+                st.write('You selected comedy.')
+                rot = st.number_input('How much to be rotated', min_value = -359, max_value = 0)
+            else:
+                st.write("You didn't select comedy.")
+                rot = st.number_input('How much to be rotated', min_value = 0, max_value = 359)
+            RTS = rotations(IMG, rot, __FILE_WITH_EXTENSION)
             Value = RTS.rotateImg()
+        
         if Operation == 5:
             BLR = imgS(IMG, __FILE_WITH_EXTENSION)
-            Value = BLR.imgAverageSmoothing((3, 3))
+            __technique = st.radio("Select one Blurring Algorithm", ('Average', 'Gaussian', 'Median', 'Bilateral'))
+            if __technique == 'Average':
+                Value = BLR.imgAverageSmoothing((21, 21))
+            if __technique == 'Gaussian':
+                Value = BLR.imgGaussianSmoothing((21, 21), 0)
+            if __technique == 'Median':
+                Value = BLR.imgMedianSmoothing(21)
+            if __technique == 'Bilateral':
+                Value = BLR.imgBilateralSmoothing(5, (21, 21))
+        
         if Operation == 6:
             DTE = imgT(IMG, __FILE_WITH_EXTENSION)
-            Value = DTE.imgCan("")
+            __technique = st.radio("Select one Blurring Algorithm", ('Canny', 'Sobel Laplace'))
+            if __technique == 'Canny':
+                Value = DTE.imgCan("")
+            if __technique == 'Sobel Laplace':
+                Value = DTE.imgSobLap("", grayScale(IMG, __FILE_WITH_EXTENSION).grayImg())
 
         # Saving processed image
         LI.imgSave(Value, FileNameWithoutExtension + __EXTENSION, "Images/")
@@ -111,10 +141,10 @@ def fullMethod(FileNameWithoutExtension, ImageCaption, Operation, TextToShow, Su
                 image_comparison(
                     img1 = "Images/upload" + __EXTENSION,
                     img2 = "Images/" + FileNameWithoutExtension + __EXTENSION,
-                    width = 400
+                    width = 600
                 )
                 st.success(SuccessMessage + "!!!")
-            if y:
+            elif y:
                 # Putting Columns based Viweing Experience if clicked on "Parallel Image Comparision?"
                 col1, col2 = st.columns(2)
                 with col1:
@@ -123,6 +153,10 @@ def fullMethod(FileNameWithoutExtension, ImageCaption, Operation, TextToShow, Su
                 with col2:
                     st.text(TextToShow + "Image - ")
                     st.image("Images/" + FileNameWithoutExtension + __EXTENSION, caption = ImageCaption, width = 400)
+                st.success(SuccessMessage + "!!!")
+            else:
+                st.text(TextToShow + "Image - ")
+                st.image("Images/" + FileNameWithoutExtension + __EXTENSION, caption = ImageCaption, width = 400)
                 st.success(SuccessMessage + "!!!")
                 
             # if Download button is clicked
@@ -149,9 +183,16 @@ def fullMethod(FileNameWithoutExtension, ImageCaption, Operation, TextToShow, Su
         st.image("Images/help.png")
 
 # Creates a sidebar navigation panel
+with st.sidebar.container():
+    st.image('Images/logo.png', use_column_width = True)
 with st.sidebar:
-    selected = option_menu("Manipulation Menu", ["Help", "Home Page", "Upload", 'Remove Background', 'GrayScale', 'Edit Image', 'Remove Images'], 
-        icons = ['info-square', 'house-door', 'file-earmark-arrow-up', 'wrench', '', '', 'trash2'], menu_icon = "cast", default_index = 1)
+    selected = option_menu(
+        "Manipulation Menu", 
+        ["Help", "Home Page", "Upload", 'Remove Background', 'GrayScale', 'Edit Image', 'Remove Images'], 
+        icons = ['info-square', 'house-door', 'file-earmark-arrow-up', 'wrench', '', '', 'trash2'], 
+        menu_icon = "cast", 
+        default_index = 1,
+    )
     selected
 
 # When "Help" button is clicked on Side bar navigation panel
@@ -176,7 +217,11 @@ if selected == "Help":
     st.caption("Note -> Before downloading you can view image to be downloaded")
 
 if selected == "Home Page":
-    st.title("Welcome to Vivek's Image Manipulation Web Site")
+    col1, col2 = st.columns([5, 2] )
+    with col1:
+        st.title("Welcome to Vivek's Image Manipulation Web Site")
+    with col2:
+        st.image('Images/logo.png', use_column_width = True)
 
 # When "Upload" button is clicked on Side bar navigation panel
 if selected == "Upload":
