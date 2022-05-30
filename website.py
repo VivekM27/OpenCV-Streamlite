@@ -87,10 +87,8 @@ def fullMethod(FileNameWithoutExtension, ImageCaption, Operation, TextToShow, Su
         if Operation == 4:
             __direction = st.radio("Select Rotational Direction", ('Clockwise', 'Anti-Clockwise'))
             if __direction == 'Clockwise':
-                st.write('You selected comedy.')
                 rot = st.number_input('How much to be rotated', min_value = -359, max_value = 0)
             else:
-                st.write("You didn't select comedy.")
                 rot = st.number_input('How much to be rotated', min_value = 0, max_value = 359)
             RTS = rotations(IMG, rot, __FILE_WITH_EXTENSION)
             Value = RTS.rotateImg()
@@ -197,6 +195,12 @@ with st.sidebar:
 if selected == "Help":
     st.title("Help Site")
     st.markdown("---")
+    st.header("Logout -> ")
+    st.subheader("Go to Home then click on Logout button")
+    st.image("Images/logout.png")
+    st.markdown("---")
+    st.markdown("---")
+    st.header("Image Operation Tutotial ->")
     st.subheader("Step - 1 -> Click on Upload to upload an image")
     st.image("Images/help.png", width = 300)
     st.markdown("---")
@@ -215,136 +219,142 @@ if selected == "Help":
     st.caption("Note -> Before downloading you can view image to be downloaded")
 
 if selected == "Home Page":
-    col1, col2 = st.columns([5, 2] )
-    with col1:
-        st.title("Welcome to Vivek's Image Manipulation Web Site")
-    with col2:
-        st.image('Images/logo.png', use_column_width = True)
+        col1, col2 = st.columns([5, 2])
+        with col1:
+            st.title("Welcome to Vivek's Image Manipulation Web Site")
+        with col2:
+            st.image('Images/logo.png', use_column_width = True)
+     
+        st.info("1. Remove Unwanted Background including those sneaky and sticky people XD")
+        st.info("2. Find Grayscale images to feel the black white days of 70s")
+        st.info("3. Change - Rotate - Blurr - Detect Edge --- 4 in 1 solution found at Edit Image sub menu option")
+        st.info("4. No more use of uploaded photo? Do't worry we got it covered with fresh Remove Images option to throw them out")
+        st.info("5. We are planning on many more easy and quick solutions so keep this website bookmarked!!!!")
 
 # When "Upload" button is clicked on Side bar navigation panel
 if selected == "Upload":
-    st.title("Upload an Image")
-    image_file = st.file_uploader("Upload Images", type = ["png", "jpg", "jpeg", "bmp"])
-    if image_file is not None:
-        # To See details
-        # file_details = {"filename":image_file.name, "filetype":image_file.type, "filesize":image_file.size}
-        # st.write(file_details)
-        
-        # To View Uploaded Image
-        # st.image(image_file, width = 250)
-        st.image(image_file, width = 300)
-        
-        #Saving upload
-        __EXTENSION = extensionFileName(image_file.name)
-        with open(os.path.join("Images/", "upload" + __EXTENSION), "wb") as f:
-        
-        # with open(os.path.join("Images/Uploaded_Image", image_file.name), "wb") as f:
-            f.write((image_file).getbuffer())
-            st.success("File Saved")
+        st.title("Upload an Image")
+        image_file = st.file_uploader("Upload Images", type = ["png", "jpg", "jpeg", "bmp"])
+        if image_file is not None:
+            # To See details
+            # file_details = {"filename":image_file.name, "filetype":image_file.type, "filesize":image_file.size}
+            # st.write(file_details)
             
-            # Writing file name into a text file
-            text_file = open("texts/file_name.txt", "w") # open text file
-            text_file.write(image_file.name) # write string to file
-            text_file.close() # close file
+            # To View Uploaded Image
+            # st.image(image_file, width = 250)
+            st.image(image_file, width = 300)
+            
+            #Saving upload
+            __EXTENSION = extensionFileName(image_file.name)
+            with open(os.path.join("Images/", "upload" + __EXTENSION), "wb") as f:
+            
+            # with open(os.path.join("Images/Uploaded_Image", image_file.name), "wb") as f:
+                f.write((image_file).getbuffer())
+                st.success("File Saved")
+                
+                # Writing file name into a text file
+                text_file = open("texts/file_name.txt", "w") # open text file
+                text_file.write(image_file.name) # write string to file
+                text_file.close() # close file
 
-# Opeartions for fullMethod(operations = *)
-# * is replaced by a number, 
-# 1 - Remove Background
-# 2 - Grayscale
-# 3 - Translate/Displacement
-# 4 - Rotate
-# 5 - Blurr
-# 6 - Edge Detection
+    # Opeartions for fullMethod(operations = *)
+    # * is replaced by a number, 
+    # 1 - Remove Background
+    # 2 - Grayscale
+    # 3 - Translate/Displacement
+    # 4 - Rotate
+    # 5 - Blurr
+    # 6 - Edge Detection
 
 # When "Remove Background" button is clicked on Side bar navigation panel
 if selected == "Remove Background":
-    st.title("Removing Background!")
-    fullMethod(
-        "bgremove", "Background Removed Image", 1, 
-        "Backgorund Removed ", "Background Removed", "Background Removed"
-    )
+        st.title("Removing Background!")
+        fullMethod(
+            "bgremove", "Background Removed Image", 1, 
+            "Backgorund Removed ", "Background Removed", "Background Removed"
+        )
 
 # When "GrayScale" button is clicked on Side bar navigation panel
 if selected == "GrayScale":
-    st.title("GrayScale!")
-    fullMethod(
-        "grayscale", "Grayscale Image", 2, 
-        "Grayscale ", "Grayscale Image generated", "Grayscale"
-    )
+        st.title("GrayScale!")
+        fullMethod(
+            "grayscale", "Grayscale Image", 2, 
+            "Grayscale ", "Grayscale Image generated", "Grayscale"
+        )
 
 # When "Edit Image" button is clicked on Side bar navigation panel
 if selected == "Edit Image":
-    st.title("Edit Uploaded Image!")
-    
-    option = st.selectbox(
-        'Which Opeartion to Perform?',
-        ('None', 'Translate', 'Rotate', 'Blurr', 'Detect Edges')
-    )
-
-    # When "Translate" option is selected from Drop Down menu
-    if option == 'Translate':
-        fullMethod(
-            "translate", "Move/Displace Image", 3, 
-            "Moved/Displaced ", "Image Moved/Displaced", "Moved_Displaced"
-        )
-
-    # When "Rotate" option is selected from Drop Down menu
-    elif option == 'Rotate':
-        fullMethod(
-            "rotate", "Rotated Image", 4,
-            "Rotated ", "Image Rotated", "Rotated"
-        )
-
-    # When "Blurr" option is selected from Drop Down menu
-    elif option == 'Blurr':
-        fullMethod(
-            "median", "Blurred Image", 5,
-            "Blurred ", "Image Blurred", "Blurred"
-        )
-
-    # When "Detect Edges" option is selected from Drop Down menu
-    elif option == 'Detect Edges':
-        fullMethod(
-            "detect", "Edge Detected Image", 6,
-            "Edge Detected ", "Image Edge Detected", "Edge Detected"
-        )
+        st.title("Edit Uploaded Image!")
         
-# When "Remove Images" button is clicked on Side bar navigation panel
-if selected == "Remove Images":
-    # Check for Wether image is uploaded or not!
-    try:
-        # open text file in read mode
-        text_file = open("texts/file_name.txt", "r")
-        __FILE_NAME = text_file.read() # read whole file to a string
-        text_file.close() # close file
+        option = st.selectbox(
+            'Which Opeartion to Perform?',
+            ('None', 'Translate', 'Rotate', 'Blurr', 'Detect Edges')
+        )
+
+        # When "Translate" option is selected from Drop Down menu
+        if option == 'Translate':
+            fullMethod(
+                "translate", "Move/Displace Image", 3, 
+                "Moved/Displaced ", "Image Moved/Displaced", "Moved_Displaced"
+            )
+
+        # When "Rotate" option is selected from Drop Down menu
+        elif option == 'Rotate':
+            fullMethod(
+                "rotate", "Rotated Image", 4,
+                "Rotated ", "Image Rotated", "Rotated"
+            )
+
+        # When "Blurr" option is selected from Drop Down menu
+        elif option == 'Blurr':
+            fullMethod(
+                "median", "Blurred Image", 5,
+                "Blurred ", "Image Blurred", "Blurred"
+            )
+
+        # When "Detect Edges" option is selected from Drop Down menu
+        elif option == 'Detect Edges':
+            fullMethod(
+                "detect", "Edge Detected Image", 6,
+                "Edge Detected ", "Image Edge Detected", "Edge Detected"
+            )
             
-        # Loading file name from a text file
-        __EXTENSION = extensionFileName(__FILE_NAME)
+    # When "Remove Images" button is clicked on Side bar navigation panel
+if selected == "Remove Images":
+        # Check for Wether image is uploaded or not!
+        try:
+            # open text file in read mode
+            text_file = open("texts/file_name.txt", "r")
+            __FILE_NAME = text_file.read() # read whole file to a string
+            text_file.close() # close file
+                
+            # Loading file name from a text file
+            __EXTENSION = extensionFileName(__FILE_NAME)
 
-        # Remove Original Image
-        if remove_img("Images/", "upload" + __EXTENSION):
-            # Print successfull deletion text
-            st.title("Suceessfully removed Uploaded image, please upload images again!")
-            st.balloons()
+            # Remove Original Image
+            if remove_img("Images/", "upload" + __EXTENSION):
+                # Print successfull deletion text
+                st.title("Suceessfully removed Uploaded image, please upload images again!")
+                st.balloons()
 
-        # Remove "Background removed" image
-        remove_img("Images/", "bgremove" + __EXTENSION)
-        
-        # Remove "Grayscale" image
-        remove_img("Images/", "grayscale" + __EXTENSION)
-        
-        # Remove "Translate" image
-        remove_img("Images/", "translate" + __EXTENSION)
+            # Remove "Background removed" image
+            remove_img("Images/", "bgremove" + __EXTENSION)
+            
+            # Remove "Grayscale" image
+            remove_img("Images/", "grayscale" + __EXTENSION)
+            
+            # Remove "Translate" image
+            remove_img("Images/", "translate" + __EXTENSION)
 
-        # Remove "Rotate" image
-        remove_img("Images/", "rotate" + __EXTENSION)
+            # Remove "Rotate" image
+            remove_img("Images/", "rotate" + __EXTENSION)
 
-        # Remove "Blurr" image
-        remove_img("Images/", "median" + __EXTENSION)
+            # Remove "Blurr" image
+            remove_img("Images/", "median" + __EXTENSION)
 
-        # Remove "Detected Edge" image
-        remove_img("Images/", "detect" + __EXTENSION)
+            # Remove "Detected Edge" image
+            remove_img("Images/", "detect" + __EXTENSION)
 
-    except:
-        st.error('Please upload an image in Upload Section')
-        st.image("Images/help.png")
+        except:
+            st.error('Please upload an image in Upload Section')
+            st.image("Images/help.png")
