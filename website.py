@@ -1,8 +1,6 @@
 # streamlit run website.py
 
 # Installed Libraries
-from tkinter import Image
-from numpy import full
 from streamlit_option_menu import option_menu
 
 # Locally created libraries
